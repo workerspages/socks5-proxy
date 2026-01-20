@@ -1,37 +1,37 @@
-# SOCKS5 Proxy
+# SOCKS5 代理服务器
 
-[![Build and Push Docker Image](https://github.com/workerspages/socks5-proxy/actions/workflows/docker-build.yml/badge.svg)](https://github.com/workerspages/socks5-proxy/actions/workflows/docker-build.yml)
+[![构建状态](https://github.com/workerspages/socks5-proxy/actions/workflows/docker-build.yml/badge.svg)](https://github.com/workerspages/socks5-proxy/actions/workflows/docker-build.yml)
 
-A lightweight SOCKS5 proxy server based on [gost](https://github.com/ginuerzh/gost).
+基于 [gost](https://github.com/ginuerzh/gost) 的轻量级 SOCKS5 代理服务器 Docker 镜像。
 
-## Features
+## 功能特性
 
-- 🚀 Lightweight Alpine-based image
-- 🔐 Optional username/password authentication
-- 🏗️ Multi-architecture support (amd64, arm64)
-- ⚙️ Simple configuration via environment variables
+- 🚀 轻量级 Alpine 基础镜像
+- 🔐 支持无认证 / 用户名密码认证
+- 🏗️ 多架构支持 (amd64, arm64)
+- ⚙️ 通过环境变量简单配置
 
-## Quick Start
+## 快速开始
 
-### Pull Image
+### 拉取镜像
 
 ```bash
-# From GitHub Container Registry
+# 从 GitHub Container Registry
 docker pull ghcr.io/workerspages/socks5-proxy:latest
 
-# From Docker Hub
+# 从 Docker Hub
 docker pull workerspages/socks5-proxy:latest
 ```
 
-### Run
+### 运行
 
-**Without authentication:**
+**无认证模式：**
 
 ```bash
 docker run -d --name socks5 -p 1080:1080 ghcr.io/workerspages/socks5-proxy:latest
 ```
 
-**With authentication:**
+**用户名密码认证模式：**
 
 ```bash
 docker run -d --name socks5 -p 1080:1080 \
@@ -40,7 +40,7 @@ docker run -d --name socks5 -p 1080:1080 \
   ghcr.io/workerspages/socks5-proxy:latest
 ```
 
-**Custom port:**
+**自定义端口：**
 
 ```bash
 docker run -d --name socks5 -p 8080:8080 \
@@ -48,15 +48,15 @@ docker run -d --name socks5 -p 8080:8080 \
   ghcr.io/workerspages/socks5-proxy:latest
 ```
 
-## Environment Variables
+## 环境变量
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `SOCKS5_PORT` | `1080` | Listening port |
-| `SOCKS5_USER` | *(empty)* | Username for authentication |
-| `SOCKS5_PASS` | *(empty)* | Password for authentication |
+| 变量名 | 默认值 | 说明 |
+|--------|--------|------|
+| `SOCKS5_PORT` | `1080` | 监听端口 |
+| `SOCKS5_USER` | *(空)* | 认证用户名 |
+| `SOCKS5_PASS` | *(空)* | 认证密码 |
 
-> **Note:** Authentication is only enabled when both `SOCKS5_USER` and `SOCKS5_PASS` are set.
+> **注意：** 只有同时设置 `SOCKS5_USER` 和 `SOCKS5_PASS` 时才会启用认证。
 
 ## Docker Compose
 
@@ -72,27 +72,27 @@ services:
       - "1080:1080"
     environment:
       - SOCKS5_PORT=1080
-      # Uncomment for authentication
+      # 取消注释以启用认证
       # - SOCKS5_USER=admin
       # - SOCKS5_PASS=your_password
 ```
 
-## Test Connection
+## 测试连接
 
 ```bash
-# Test without authentication
+# 无认证测试
 curl -x socks5://127.0.0.1:1080 https://httpbin.org/ip
 
-# Test with authentication
+# 有认证测试
 curl -x socks5://admin:your_password@127.0.0.1:1080 https://httpbin.org/ip
 ```
 
-## Build Locally
+## 本地构建
 
 ```bash
 docker build -t socks5-proxy:local .
 ```
 
-## License
+## 许可证
 
 MIT License
