@@ -5,22 +5,23 @@
 # https://github.com/ginuerzh/gost
 # =============================================================================
 
-FROM golang:1.21-alpine AS builder
+FROM golang:1.22-alpine AS builder
 
 # Install build dependencies
-RUN apk add --no-cache git
+RUN apk add --no-cache musl-dev git gcc
 
-# Build gost from source
-ARG GOST_VERSION=v2.11.5
-RUN git clone --branch ${GOST_VERSION} --depth 1 https://github.com/ginuerzh/gost.git /src/gost \
-    && cd /src/gost/cmd/gost \
+# Clone and build gost from source
+ARG GOST_VERSION=v2.12.0
+WORKDIR /src
+RUN git clone --branch ${GOST_VERSION} --depth 1 https://github.com/ginuerzh/gost.git . \
+    && cd cmd/gost \
     && CGO_ENABLED=0 go build -ldflags="-s -w" -o /gost
 
 # =============================================================================
 # Final image
 # =============================================================================
 
-FROM alpine:3.19
+FROM alpine:3.20
 
 LABEL org.opencontainers.image.title="SOCKS5 Proxy"
 LABEL org.opencontainers.image.description="A lightweight SOCKS5 proxy server based on gost"
